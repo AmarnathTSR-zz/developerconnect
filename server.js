@@ -1,8 +1,19 @@
 //  Import the external libraries
-const express = require("express");
+const express = require('express');
+const mongoose = require('mongoose');
+
+// Import Keys
+const uri = require('./config/keys').mongoURI;
 
 // Initialize the app
 const app = express();
+
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true
+  })
+  .then(() => console.log("DB connected success"))
+  .catch(err => console.log(err));
 
 app.get("/", (req, res) => {
   res.send(`Welcome to worlds`);
