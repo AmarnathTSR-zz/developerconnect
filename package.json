@@ -1,0 +1,25 @@
+{
+  "name": "developerconnect",
+  "version": "1.0.0",
+  "description": "A social network for developers using nodejs, react, redux, expressjs, mongodb and bootstrap",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmarnathTSR/developerconnect.git"
+  },
+  "keywords": [
+    "node",
+    "react",
+    "redux",
+    "mongodb"
+  ],
+  "author": "Amarnath TSR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmarnathTSR/developerconnect/issues"
+  },
+  "homepage": "https://github.com/AmarnathTSR/developerconnect#readme"
+}
