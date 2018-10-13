@@ -2,6 +2,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+
+
+// Include custom Router we created
+
+const users = require('./routes/api/users');
+const profile = require('./routes/api/profile');
+const posts = require('./routes/api/posts');
+
 // Import Keys
 const uri = require('./config/keys').mongoURI;
 
@@ -18,6 +26,14 @@ mongoose
 app.get("/", (req, res) => {
   res.send(`Welcome to worlds`);
 });
+
+// Use our router 
+
+app.use('/api/users', users);
+app.use('/api/profile', profile);
+app.use('/api/posts', posts);
+
+
 
 //  Assigning the port eg. http://localhost/3000 for local environment for heroku we use process.env.port
 const port = process.env.PORT || 3000;
