@@ -1,7 +1,7 @@
 //  Import the external libraries
 const express = require('express');
 const mongoose = require('mongoose');
-
+const bodyparser = require('body-parser');
 
 
 // Include custom Router we created
@@ -15,6 +15,15 @@ const uri = require('./config/keys').mongoURI;
 
 // Initialize the app
 const app = express();
+// parse application/x-www-form-urlencoded
+app.use(bodyparser.urlencoded({
+  extended: false
+}));
+
+// parse application/json
+app.use(bodyparser.json());
+
+
 
 mongoose
   .connect(uri, {
