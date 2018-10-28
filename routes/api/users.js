@@ -3,10 +3,14 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 
 //  User model included
 const User = require('../../models/User');
+
+// include secret key
+
 const keys = require('../../config/keys');
 
 
@@ -106,6 +110,7 @@ router.post('/login', (req, res) => {
                 // Password is match user login success and generate token 
 
                 const payload = {
+                    id: user.id,
                     name: user.name,
                     email: user.email,
                     avatar: user.avatar
@@ -134,5 +139,25 @@ router.post('/login', (req, res) => {
 
 
 });
+
+// @route: /api/users/current
+// Desc:   getting current users
+// Access: Private
+
+router.post('/current', passport.authenticate('jwt', {
+        session: false
+    }),
+    (req, res) => {
+        res.json({
+                id: req.user.id,
+                name: req.user.name,
+                email: req.user.email
+            }
+
+        );
+    }
+);
+
+
 
 module.exports = router;
