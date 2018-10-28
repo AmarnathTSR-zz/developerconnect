@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-
+const passport = require('passport');
 
 // Include custom Router we created
 
@@ -23,8 +23,6 @@ app.use(bodyparser.urlencoded({
 // parse application/json
 app.use(bodyparser.json());
 
-
-
 mongoose
   .connect(uri, {
     useNewUrlParser: true
@@ -32,9 +30,13 @@ mongoose
   .then(() => console.log("DB connected success"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send(`Welcome to worlds`);
-});
+// passport middleware added
+
+app.use(passport.initialize());
+
+// include passport stratagy
+
+require('./config/passport')(passport);
 
 // Use our router 
 
