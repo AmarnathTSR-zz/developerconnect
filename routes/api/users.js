@@ -8,6 +8,7 @@ const passport = require('passport');
 // Load input validation 
 
 const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 //  User model included
 const User = require('../../models/User');
@@ -97,6 +98,15 @@ router.post('/register', (req, res) => {
 
 router.post('/login', (req, res) => {
 
+    const {
+        errors,
+        isValid
+    } = validateLoginInput(req.body);
+
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -106,9 +116,9 @@ router.post('/login', (req, res) => {
 
         //check the user available or not
         if (!user) {
-            return res.status(404).json({
-                email: "User Not Found"
-            });
+
+            errors.email = 'User Not found';
+            return res.status(404).json(errors);
         }
 
         // compare given password with password in database using bcrypt
@@ -141,9 +151,9 @@ router.post('/login', (req, res) => {
 
 
             } else {
-                return res.status(400).json({
-                    password: "Invalid Password"
-                });
+
+                errors.password = 'Password is invalid';
+                return res.status(400).json(errors);
             }
         });
     });
@@ -154,6 +164,8 @@ router.post('/login', (req, res) => {
 // @route: /api/users/current
 // Desc:   getting current users
 // Access: Private
+
+
 
 router.post('/current', passport.authenticate('jwt', {
         session: false
@@ -167,8 +179,8 @@ router.post('/current', passport.authenticate('jwt', {
 
         );
     }
-);
 
+);
 
 
 module.exports = router;
