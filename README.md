@@ -1,4 +1,10 @@
-Rest API
+Creating Rest API using Node.js , Express and MongoDB for my interview purpose
+
+I have deploy production environment in digitalocean server IP address http://139.59.76.24:5000 for interview purpose.
+
+Below i have created two routes. one is for user registration and Login and another one for create, update, access current user profile and access all user profile and then delete the current login users
+
+## Kindly use the postman to check my rest API
 
 ## User Route RestAPI
 
@@ -115,3 +121,9 @@ IN HEADER
 Authorization : Bearer token (this token getting from login)
 
 Production URL: http://139.59.76.24:5000/api/profile
+
+Thanks
+TSR.Amarnath
+www.amarnath.xyz
+
+Thanks for providing oportunity to show my work in node js
