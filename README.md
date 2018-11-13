@@ -14,6 +14,8 @@ IN BODY
 
 name, email, password
 
+Production URL: http://139.59.76.24:5000/api/users/register
+
 ## Login Existing User API
 
 http://localhost:5000/api/users/login
@@ -26,6 +28,8 @@ IN BODY
 
 email, password
 
+Production URL: http://139.59.76.24:5000/api/users/login
+
 ## Getting Current Login User using Bearer Token Authorisation
 
 http://localhost:5000/api/users/current
@@ -37,6 +41,8 @@ Require Fields
 IN HEADER
 
 Authorization : Bearer token (this token getting from login)
+
+Production URL: http://139.59.76.24:5000/api/users/current
 
 ## Profile Route RestAPI
 
@@ -52,7 +58,9 @@ IN HEADER
 
 Authorization : Bearer token (this token getting from login)
 
-## Create Profile for current login user
+Production URL: http://139.59.76.24:5000/api/profile
+
+## Create & Update Profile for current login user
 
 http://localhost:5000/api/profile
 
@@ -68,19 +76,33 @@ IN BODY
 
 handle, company, website, location, bio, githubusername
 
-## Get current current user profile using handle
+Production URL: http://139.59.76.24:5000/api/profile
 
-http://localhost:5000/api/profile/handle/:handle
-
-Method : GET
-
-## Get current current user profile using user_id
+## Get All user profile
 
 http://localhost:5000/api/profile/user/:user_id
 
 Method : GET
 
-## Get current current user profile
+Production URL: http://139.59.76.24:5000/api/profile/all
+
+## Get user profile using handle
+
+http://localhost:5000/api/profile/handle/:handle
+
+Method : GET
+
+Production URL: http://139.59.76.24:5000/api/profile/handle/amarnath
+
+## Get user profile using user_id
+
+http://localhost:5000/api/profile/user/:user_id
+
+Method : GET
+
+Production URL: http://139.59.76.24:5000/api/profile/user/5beaef46698c993f055f60c3
+
+## Delete current Login user profile
 
 http://localhost:5000/api/profile
 
@@ -91,3 +113,5 @@ Require Fields
 IN HEADER
 
 Authorization : Bearer token (this token getting from login)
+
+Production URL: http://139.59.76.24:5000/api/profile
