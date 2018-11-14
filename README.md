@@ -33,6 +33,24 @@ name, email, password
 
 Production URL: http://139.59.76.24:5000/api/users/register
 
+## only admin can delete the user
+
+http://localhost:5000/api/users
+
+Method : DELETE
+
+Require Fields
+
+IN HEADER
+
+Authorization : Use above admin login Bearer token (this token getting from login)
+
+IN BODY
+
+id - (user id which you want to delete the user)
+
+Production URL: http://139.59.76.24:5000/api/users
+
 ## Login Existing User API
 
 http://localhost:5000/api/users/login
