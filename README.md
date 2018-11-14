@@ -4,6 +4,13 @@ I have deploy production environment in digitalocean server IP address http://13
 
 Below i have created two routes. one is for user registration and Login and another one for create, update, access current user profile and access all user profile and then delete the current login users
 
+## Admin and user roles updated
+
+## Admin Login
+
+email: tsr.amarnath@gmail.com
+password:1234567890
+
 ## Kindly use the postman to check my rest API
 
 ## User Route RestAPI
@@ -15,6 +22,10 @@ http://localhost:5000/api/users/register
 Method : POST
 
 Require Fields
+
+IN HEADER
+
+Authorization : Use above admin login Bearer token (this token getting from login)
 
 IN BODY
 
