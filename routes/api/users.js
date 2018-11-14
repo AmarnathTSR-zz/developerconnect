@@ -11,6 +11,8 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
 //  User model included
+// Load Profile Model
+const Profile = require("../../models/Profile");
 const User = require("../../models/User");
 
 // include secret key
@@ -159,6 +161,32 @@ router.post(
       name: req.user.name,
       email: req.user.email,
       role: req.user.role
+    });
+  }
+);
+
+// @route   DELETE api/users
+// @desc    Delete user and users
+// @access  Private
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    // check authorization have admin user or not
+
+    const role = req.user.role;
+
+    // if user role is not admin throw error
+    if (role != "admin") {
+      res
+        .status(400)
+        .json({ errors: "admin only can able to  register users" });
+    }
+    Profile.findOneAndRemove({ user: req.body.id }).then(() => {
+      User.findOneAndRemove({ _id: req.body.id }).then(() =>
+        res.json({ success: true })
+      );
     });
   }
 );
