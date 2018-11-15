@@ -10,6 +10,9 @@ const passport = require("passport");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
+// Load Validation
+const validateProfileInput = require("../../validation/profile");
+
 //  User model included
 // Load Profile Model
 const Profile = require("../../models/Profile");
@@ -19,9 +22,13 @@ const User = require("../../models/User");
 
 const keys = require("../../config/keys");
 
+// Admin control -------------------------------------------------------------
+
+// TASK No - 1 (Admin Can Add User)
+
 // @route: /api/users/register
 // Desc:   Registered new user Admin only
-// Access: Private
+// Access:  Private -(ADMIN ONLY)
 
 router.post(
   "/register",
@@ -83,6 +90,164 @@ router.post(
           });
         });
       }
+    });
+  }
+);
+
+// Admin control -------------------------------------------------------------
+
+// TASK No - 1 - EDIT USER (Admin Can Edit any user details)
+
+// @route: /api/users/edit
+// Desc:   EDIT USER BY GIVE ID
+// Access: Private -(ADMIN ONLY)
+
+router.post(
+  "/edit",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    // check authorization have admin user or not
+
+    const role = req.user.role;
+
+    // if user role is not admin throw error
+    if (role != "admin") {
+      res
+        .status(400)
+        .json({ errors: "admin only can able to  register users" });
+    }
+
+    // else user role is admin means edit the user with given id
+
+    // Get fields
+    const profileFields = {};
+    profileFields.user = req.body.id;
+    if (req.body.handle) profileFields.handle = req.body.handle;
+    if (req.body.company) profileFields.company = req.body.company;
+    if (req.body.website) profileFields.website = req.body.website;
+    if (req.body.location) profileFields.location = req.body.location;
+    if (req.body.bio) profileFields.bio = req.body.bio;
+    if (req.body.githubusername)
+      profileFields.githubusername = req.body.githubusername;
+
+    Profile.findOne({ user: req.body.id }).then(profile => {
+      if (profile) {
+        // Update
+        Profile.findOneAndUpdate(
+          { user: req.body.id },
+          { $set: profileFields },
+          { new: true }
+        ).then(profile => res.json(profile));
+      } else {
+        // Create
+
+        // Check if handle exists
+        Profile.findOne({ handle: profileFields.handle }).then(profile => {
+          if (profile) {
+            errors.handle = "That handle already exists";
+            res.status(400).json(errors);
+          }
+
+          // Save Profile
+          new Profile(profileFields).save().then(profile => res.json(profile));
+        });
+      }
+    });
+  }
+);
+
+// Admin control -------------------------------------------------------------
+
+// TASK No - 1 - CHANGE PASSWORD (Admin Can Add User)
+
+// @route: /api/users/register
+// Desc:   Registered new user Admin only
+// Access:  Private -(ADMIN ONLY)
+
+router.post(
+  "/password",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  (req, res) => {
+    const errors = {};
+
+    // check authorization have admin user or not
+
+    const role = req.user.role;
+
+    // if user role is not admin throw error
+    if (role != "admin") {
+      res
+        .status(400)
+        .json({ errors: "admin only can able to  reset users password" });
+    }
+
+    // else user role is admin create new user
+
+    User.findById({
+      _id: req.body.id
+    }).then(user => {
+      if (!user) {
+        errors.id = "User Does not exist";
+        return res.status(404).json(errors);
+      } else {
+        const userFields = {};
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            if (err) {
+              console.log(err);
+            }
+            userFields.password = hash;
+            // Update
+            User.findOneAndUpdate(
+              { id: req.body.id },
+              { $set: userFields },
+              { new: true }
+            ).then(password =>
+              res.json({ message: "password change success" })
+            );
+          });
+        });
+      }
+    });
+  }
+);
+
+// Admin control -------------------------------------------------------------
+
+// TASK No - 1 - DELETE USER (Admin Can Delete User)
+
+// @route   DELETE api/users
+// @desc    DELETE USER AND PROFILE BY GIVEN ID
+// @access   Private -(ADMIN ONLY)
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    // check authorization have admin user or not
+
+    const role = req.user.role;
+
+    // if user role is not admin throw error
+    if (role != "admin") {
+      res
+        .status(400)
+        .json({ errors: "admin only can able to  register users" });
+    }
+    Profile.findOneAndRemove({ user: req.body.id }).then(() => {
+      User.findOneAndRemove({ _id: req.body.id }).then(() =>
+        res.json({ success: true })
+      );
     });
   }
 );
@@ -161,32 +326,6 @@ router.post(
       name: req.user.name,
       email: req.user.email,
       role: req.user.role
-    });
-  }
-);
-
-// @route   DELETE api/users
-// @desc    Delete user and users
-// @access  Private
-
-router.delete(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    // check authorization have admin user or not
-
-    const role = req.user.role;
-
-    // if user role is not admin throw error
-    if (role != "admin") {
-      res
-        .status(400)
-        .json({ errors: "admin only can able to  register users" });
-    }
-    Profile.findOneAndRemove({ user: req.body.id }).then(() => {
-      User.findOneAndRemove({ _id: req.body.id }).then(() =>
-        res.json({ success: true })
-      );
     });
   }
 );
