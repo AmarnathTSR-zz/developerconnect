@@ -197,6 +197,8 @@ handle, company, website, location, bio, githubusername
 
 Production URL: http://139.59.76.24:5000/api/profile
 
+##---------------------------------- END FOR INTERVIEW -------------------------------------------
+
 ## Getting Current Login User using Bearer Token Authorisation
 
 http://localhost:5000/api/users/current
@@ -268,5 +270,3 @@ Production URL: http://139.59.76.24:5000/api/profile
 Thanks
 TSR.Amarnath
 www.amarnath.xyz
-
-Thanks for providing oportunity to show my work in node js
