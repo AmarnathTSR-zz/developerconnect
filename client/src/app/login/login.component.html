@@ -1,4 +1,19 @@
-<label for="email">Enter Email</label> <input type="text" name="email" />
-<label for="password">Enter Password</label> <input type="password" name="password" />
-
-<button (click)="FormLogin()">Login</button>
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>User Login</mat-card-title>
+    <mat-card-subtitle>Please Enter Your Login Details</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="example-form">
+      <mat-form-field class="full-width">
+        <input type="email" matInput placeholder="Enter Your Email" />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input type="password" matInput placeholder="Enter Your Password" />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary">LOGIN</button> <button mat-button>CANCEL</button>
+  </mat-card-actions>
+</mat-card>
