@@ -20,10 +20,12 @@ export default class login extends Component {
       password: this.state.password
     };
     console.log(user);
+
+    //  post the email and password to express using axios
     axios
       .post('http://localhost:5000/api/users/login', user)
       .then(res => console.log(res.data))
-      .catch(err => console.log(err.response.data));
+      .catch(err => this.setState({ errors: err.response.data }));
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
