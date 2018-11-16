@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 export default class login extends Component {
   constructor() {
     super();
@@ -17,9 +17,13 @@ export default class login extends Component {
 
     const user = {
       email: this.state.email,
-      passsword: this.state.password
+      password: this.state.password
     };
     console.log(user);
+    axios
+      .post('http://localhost:5000/api/users/login', user)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.response.data));
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -50,7 +54,7 @@ export default class login extends Component {
                     className="form-control form-control-lg"
                     placeholder="Password"
                     name="password"
-                    value={this.state.passsword}
+                    value={this.state.password}
                     onChange={this.onChange}
                   />
                 </div>
